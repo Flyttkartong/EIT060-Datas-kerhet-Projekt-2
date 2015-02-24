@@ -17,7 +17,7 @@ public class AccessController {
 	private User currentUser;
 	private HashMap<String, User> users;
 	private HashMap<String, MedicalRecord> records;
-	private final String DENIED = "Permission denied.";
+	private static final String PERMISSION_DENIED = "Permission denied.";
 
 	public AccessController(String userID) {
 		loadData();
@@ -45,7 +45,8 @@ public class AccessController {
 			logger.logRead(currentUser.getID(), mrID);
 			return mr.read();
 		}
-		return DENIED;
+		logger.logFailedRead(currentUser.getID(), mrID);
+		return PERMISSION_DENIED;
 	}
 
 	public String write(String mrID, String data) {
@@ -58,7 +59,8 @@ public class AccessController {
 				return "Write successful!";
 			}
 		}
-		return DENIED;
+		logger.logFailedWrite(currentUser.getID(), mrID);
+		return PERMISSION_DENIED;
 	}
 
 	public String remove(String mrID) {
@@ -67,7 +69,8 @@ public class AccessController {
 			logger.logRemove(currentUser.getID(), mrID);
 			return "The medical record was successfully removed!";
 		}
-		return DENIED;
+		logger.logFailedRemove(currentUser.getID(), mrID);
+		return PERMISSION_DENIED;
 	}
 
 	public String create(String mrID, String patientID, String nurseID, String data) {
@@ -77,7 +80,8 @@ public class AccessController {
 			logger.logCreate(currentUser.getID(), mrID);
 			return "The medical record was successfully created!";
 		}
-		return DENIED;
+		logger.logFailedCreate(currentUser.getID(), mrID);
+		return PERMISSION_DENIED;
 	}
 
 	private class RecordHandler {
