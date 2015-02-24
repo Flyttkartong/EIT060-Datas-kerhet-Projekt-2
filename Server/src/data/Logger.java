@@ -1,9 +1,11 @@
 package data;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Logger {
 	private static final String PERMISSION_DENIED = " (permission denied)";
@@ -11,58 +13,55 @@ public class Logger {
 
 	public Logger(String fileName) {
 		this.fileName = fileName;
+
 	}
-	
+
 	private void write(String content) {
-		try {
-			File file = new File(fileName);
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(content);
-			bw.close();
-
+		try (PrintWriter out = new PrintWriter(new BufferedWriter(
+				new FileWriter(fileName, true)))) {
+			out.println(content);
 		} catch (IOException e) {
-			e.printStackTrace();
+			// exception handling left as an exercise for the reader
 		}
 	}
 
 	public void logRead(String userID, String mrID) {
-		write("User: " + userID + " read Medical Record: " + mrID);
+		write(date() + userID + " read " + mrID);
 	}
 
 	public void logWrite(String userID, String mrID) {
-		write("User: " + userID + " wrote to Medical Record: " + mrID);
+		write(date() + userID + " wrote to " + mrID);
 	}
 
 	public void logRemove(String userID, String mrID) {
-		write("User: " + userID + " removed Medical Record: " + mrID);
+		write(date() + userID + " removed " + mrID);
 	}
 
 	public void logCreate(String userID, String mrID) {
-		write("User: " + userID + " created Medical Record: " + mrID);
+		write(date() + userID + " created " + mrID);
 	}
 
 	public void logFailedRead(String userID, String mrID) {
-		write("User: " + userID + " tried to read Medical Record: " + mrID + PERMISSION_DENIED);
+		write(date() + userID + " tried to read " + mrID + PERMISSION_DENIED);
 	}
 
 	public void logFailedWrite(String userID, String mrID) {
-		write("User: " + userID + " tried to write to Medical Record: " + mrID + PERMISSION_DENIED);
-		
+		write(date() + userID + " tried to write " + mrID + PERMISSION_DENIED);
+
 	}
 
 	public void logFailedRemove(String userID, String mrID) {
-		write("User: " + userID + " tried to remove Medical Record: " + mrID + PERMISSION_DENIED);
-		
+		write(date() + userID + " tried to remove " + mrID + PERMISSION_DENIED);
+
 	}
 
 	public void logFailedCreate(String userID, String mrID) {
-		write("User: " + userID + " tried to create Medical Record: " + mrID + PERMISSION_DENIED);
+		write(date() + userID + " tried to create " + mrID + PERMISSION_DENIED);
+	}
+
+	private String date() {
+		Date date = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		return "[" + df.format(date) + "] ";
 	}
 }
