@@ -12,19 +12,19 @@ public class Logger {
 		this.fileName = fileName;
 	}
 
-	public void logRead(ID userID, int mrID) {
+	public void logRead(String userID, String mrID) {
 		write("User: " + userID + " read from Medical Record: " + mrID);
 	}
 
-	public void logWrite(ID userID, int mrID) {
+	public void logWrite(String userID, String mrID) {
 		write("User: " + userID + " wrote to Medical Record: " + mrID);
 	}
 
-	public void logRemove(ID userID, int mrID) {
+	public void logRemove(String userID, String mrID) {
 		write("User: " + userID + " removed Medical Record: " + mrID);
 	}
 
-	public void logCreate(ID userID, int mrID) {
+	public void logCreate(String userID, String mrID) {
 		write("User: " + userID + " created Medical Record: " + mrID);
 	}
 

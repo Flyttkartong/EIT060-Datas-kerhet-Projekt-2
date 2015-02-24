@@ -2,27 +2,16 @@ package data;
 
 import java.util.ArrayList;
 
-import user.Doctor;
-import user.Nurse;
-import user.Patient;
-import user.User;
-
 public class MedicalRecord {
-	private int ID;
-	private Doctor doctor;
-	private Nurse nurse;
-	private Patient patient;
-	private String division;
-	private String data;
+	private String mrID, doctorID, nurseID, patientID, division, data;
 
-	public MedicalRecord(Doctor doctor, Nurse nurse, Patient patient,
-			String division, String data, int ID) {
-		this.patient = patient;
-		this.nurse = nurse;
-		this.doctor = doctor;
+	public MedicalRecord(String mrID, String patientID, String nurseID, String doctorID, String division, String data) {
+		this.mrID = mrID;
+		this.patientID = patientID;
+		this.nurseID = nurseID;
+		this.doctorID = doctorID;
 		this.division = division;
 		this.data = data;
-		this.ID = ID;
 	}
 
 	public String read() {
@@ -30,22 +19,14 @@ public class MedicalRecord {
 	}
 
 	public void write(String data) {
-		this.data = data;
+		this.data.concat("\n" + data);
 	}
 
-	public void delete() {
-		patient = null;
-		nurse = null;
-		doctor = null;
-		division = null;
-		data = null;
-	}
-
-	public ArrayList<User> getAccessList() {
-		ArrayList<User> accessList = new ArrayList<User>();
-		accessList.add(doctor);
-		accessList.add(nurse);
-		accessList.add(patient);
+	public ArrayList<String> getAccessList() {
+		ArrayList<String> accessList = new ArrayList<String>();
+		accessList.add(doctorID);
+		accessList.add(nurseID);
+		accessList.add(patientID);
 		return accessList;
 	}
 
@@ -53,7 +34,7 @@ public class MedicalRecord {
 		return division;
 	}
 
-	public int  getID() {
-		return ID;
+	public String getID() {
+		return mrID;
 	}
 }

@@ -3,10 +3,21 @@ package user;
 import java.util.ArrayList;
 
 public class Doctor extends Staff {
-	private String division;
-	private ArrayList<User> treating;
+	private ArrayList<String> treating;
 
-	public Doctor(String username, String password, String name, String division) {
-		super(username, password, name, division);
+	public Doctor(String userID, String division) {
+		super(userID, division);
+	}
+	
+	public void addPatient(String patientID) {
+		treating.add(patientID);
+	}
+	
+	public void removePatient(String patientID) {
+		treating.remove(patientID);
+	}
+	
+	public ArrayList<String> getTreatingList(){
+		return treating;
 	}
 }
