@@ -1,0 +1,11 @@
+Read Medical Record:
+read ID
+
+Write to Medical Record:
+write ID "data"
+
+Remove Medical Record:
+remove ID
+
+Create Medical Record:
+create ID patient nurse "data"
