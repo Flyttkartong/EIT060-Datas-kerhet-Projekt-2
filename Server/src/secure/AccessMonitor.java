@@ -1,5 +1,10 @@
 package secure;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import user.Doctor;
@@ -16,7 +21,7 @@ public class AccessMonitor {
 	private Logger logger;
 
 	public AccessMonitor() {
-
+		logger = new Logger("logfile");
 	}
 
 	public boolean authenticate(ID ID) {
@@ -56,11 +61,29 @@ public class AccessMonitor {
 		}
 	}
 
-	public void create(User user, Nurse nurse, Patient patient, String data, int ID) {
-		if(user instanceof Doctor){
+	public void create(User user, Nurse nurse, Patient patient, String data,
+			int ID) {
+		if (user instanceof Doctor) {
 			Doctor doctor = (Doctor) user;
-			MedicalRecord mr = new MedicalRecord(doctor, nurse, patient, doctor.getDivision(), data, ID);
+			MedicalRecord mr = new MedicalRecord(doctor, nurse, patient,
+					doctor.getDivision(), data, ID);
 			logger.logCreate(user.getID(), mr.getID());
+		}
+	}
+
+	private class RecordHandler {
+		public ArrayList<MedicalRecord> read() {
+			Charset charset = Charset.forName("US-ASCII");
+			try (BufferedReader reader = Files.newBufferedReader(
+					Paths.get("./Medical Records"), charset)) {
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					System.out.println(line);
+				}
+			} catch (IOException e) {
+				System.err.format("IOException: %s%n", e);
+			}
+			return null;
 		}
 	}
 }
