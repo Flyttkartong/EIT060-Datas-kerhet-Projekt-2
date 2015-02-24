@@ -19,7 +19,7 @@ public class MedicalRecord {
 	}
 
 	public void write(String data) {
-		this.data.concat("\n" + data);
+		this.data = data;
 	}
 
 	public ArrayList<String> getAccessList() {
