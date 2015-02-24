@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import test.DataGenerator;
 import user.*;
 import data.Logger;
 import data.MedicalRecord;
@@ -17,22 +18,33 @@ public class AccessController {
 	private User currentUser;
 	private HashMap<String, User> users;
 	private HashMap<String, MedicalRecord> records;
-	private static final String PERMISSION_DENIED = "Permission denied.";
+	private static final String PERMISSION_DENIED = "Error: Permission denied.";
+	private static final String NOT_FOUND = "Error: Medical Record not found.";
 
-	public AccessController(String userID) {
+	public AccessController(String userID, String logFilePath) {
 		loadData();
 		currentUser = users.get(userID);
-		logger = new Logger("logfile");
+		logger = new Logger(logFilePath);
+	}
+	
+	/**
+	 * Only for testing
+	 */
+	public void setCurrentUserID(String userID) {
+		currentUser = users.get(userID);
 	}
 
 	private void loadData() {
-		// TODO Load users and medical records from file
-		users = new HashMap<String, User>();
-		records = new HashMap<String, MedicalRecord>();
+		// TODO Load users and medical records from file?
+		users = DataGenerator.createUserMap();
+		records = DataGenerator.createRecordMap();
 	}
 
 	public String read(String mrID) {
 		MedicalRecord mr = records.get(mrID);
+		if(mr == null){
+			return NOT_FOUND;
+		}
 		ArrayList<String> accessList = mr.getAccessList();
 		String mrDivision = mr.getDivision();
 		if (accessList.contains(currentUser.getID())) {
@@ -51,6 +63,9 @@ public class AccessController {
 
 	public String write(String mrID, String data) {
 		MedicalRecord mr = records.get(mrID);
+		if(mr == null){
+			return NOT_FOUND;
+		}
 		ArrayList<String> accessList = mr.getAccessList();
 		if (accessList.contains(currentUser.getID())) {
 			if (currentUser instanceof Doctor || currentUser instanceof Nurse) {
@@ -64,12 +79,16 @@ public class AccessController {
 	}
 
 	public String remove(String mrID) {
+		MedicalRecord mr = records.get(mrID);
+		if(mr == null){
+			return NOT_FOUND;
+		}
 		if (currentUser instanceof GA) {
-			records.remove(mrID);
-			logger.logRemove(currentUser.getID(), mrID);
+			records.remove(mr.getID());
+			logger.logRemove(currentUser.getID(), mr.getID());
 			return "The medical record was successfully removed!";
 		}
-		logger.logFailedRemove(currentUser.getID(), mrID);
+		logger.logFailedRemove(currentUser.getID(), mr.getID());
 		return PERMISSION_DENIED;
 	}
 
