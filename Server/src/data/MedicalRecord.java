@@ -2,15 +2,23 @@ package data;
 
 import java.util.ArrayList;
 
+import user.Doctor;
+import user.Nurse;
+import user.Patient;
 import user.User;
 
 public class MedicalRecord {
-	private ArrayList<User> access;
+	private Doctor doctor;
+	private Nurse nurse;
+	private Patient patient;
 	private String division;
 	private String data;
 
-	public MedicalRecord(ArrayList<User> access, String division, String data) {
-		this.access = access;
+	public MedicalRecord(Doctor doctor, Nurse nurse, Patient patient,
+			String division, String data) {
+		this.patient = patient;
+		this.nurse = nurse;
+		this.doctor = doctor;
 		this.division = division;
 		this.data = data;
 	}
@@ -22,18 +30,24 @@ public class MedicalRecord {
 	public void write(String data) {
 		this.data = data;
 	}
-	
-	public void delete(){
-		access = null;
+
+	public void delete() {
+		patient = null;
+		nurse = null;
+		doctor = null;
 		division = null;
 		data = null;
 	}
-	
-	public void giveAccess(User user){
-		access.add(user);
+
+	public ArrayList<User> getAccessList() {
+		ArrayList<User> accessList = new ArrayList<User>();
+		accessList.add(doctor);
+		accessList.add(nurse);
+		accessList.add(patient);
+		return accessList;
 	}
-	
-	public void removeAccess(User user){
-		access.remove(user);
+
+	public String getDivision() {
+		return division;
 	}
 }
