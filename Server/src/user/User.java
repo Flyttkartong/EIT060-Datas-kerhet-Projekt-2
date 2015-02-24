@@ -10,4 +10,8 @@ public abstract class User {
 		ID = new ID(username, password);
 		this.name = name;
 	}
+
+	public ID getID() {
+		return ID;
+	}
 }

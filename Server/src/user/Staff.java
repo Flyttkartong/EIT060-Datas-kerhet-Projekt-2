@@ -13,4 +13,8 @@ public abstract class Staff extends User {
 			return true;
 		return false;
 	}
+
+	public String getDivision() {
+		return division;
+	}
 }

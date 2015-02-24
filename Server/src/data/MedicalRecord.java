@@ -8,6 +8,7 @@ import user.Patient;
 import user.User;
 
 public class MedicalRecord {
+	private int ID;
 	private Doctor doctor;
 	private Nurse nurse;
 	private Patient patient;
@@ -15,12 +16,13 @@ public class MedicalRecord {
 	private String data;
 
 	public MedicalRecord(Doctor doctor, Nurse nurse, Patient patient,
-			String division, String data) {
+			String division, String data, int ID) {
 		this.patient = patient;
 		this.nurse = nurse;
 		this.doctor = doctor;
 		this.division = division;
 		this.data = data;
+		this.ID = ID;
 	}
 
 	public String read() {
@@ -49,5 +51,9 @@ public class MedicalRecord {
 
 	public String getDivision() {
 		return division;
+	}
+
+	public int  getID() {
+		return ID;
 	}
 }
