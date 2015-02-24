@@ -11,6 +11,7 @@ public class Tester {
 		testRead(ih);
 		testWrite(ih);
 		testRead(ih);
+		ac.setCurrentUserID("Bengt");
 		testRemove(ih);
 	}
 
