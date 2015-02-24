@@ -2,7 +2,9 @@ package secure;
 
 import java.util.ArrayList;
 
+import user.Doctor;
 import user.GA;
+import user.Nurse;
 import user.Staff;
 import user.User;
 import data.ID;
@@ -29,6 +31,15 @@ public class AccessMonitor {
 			return mr.read();
 		}
 		return null;
+	}
+
+	public void write(User user, MedicalRecord mr, String data){
+		ArrayList<User> accessList = mr.getAccessList();
+		if(accessList.contains(user)){
+			if(user instanceof Doctor || user instanceof Nurse){
+				mr.write(data);
+			}
+		}
 	}
 
 	public void removeMedicalRecord(User user, MedicalRecord mr) {
