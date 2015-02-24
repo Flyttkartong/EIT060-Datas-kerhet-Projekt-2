@@ -42,7 +42,7 @@ public class AccessController {
 
 	public String read(String mrID) {
 		MedicalRecord mr = records.get(mrID);
-		if(mr == null){
+		if (mr == null) {
 			return NOT_FOUND;
 		}
 		ArrayList<String> accessList = mr.getAccessList();
@@ -50,7 +50,8 @@ public class AccessController {
 		if (accessList.contains(currentUser.getID())) {
 			logger.logRead(currentUser.getID(), mrID);
 			return mr.read();
-		} else if (currentUser instanceof Staff && ((Staff) currentUser).getDivision().equals(mrDivision)) {
+		} else if (currentUser instanceof Staff
+				&& ((Staff) currentUser).getDivision().equals(mrDivision)) {
 			logger.logRead(currentUser.getID(), mrID);
 			return mr.read();
 		} else if (currentUser instanceof GA) {
@@ -62,13 +63,13 @@ public class AccessController {
 	}
 
 	public String write(String mrID, String data) {
-		MedicalRecord mr = records.get(mrID);
-		if(mr == null){
-			return NOT_FOUND;
-		}
-		ArrayList<String> accessList = mr.getAccessList();
-		if (accessList.contains(currentUser.getID())) {
-			if (currentUser instanceof Doctor || currentUser instanceof Nurse) {
+		if (currentUser instanceof Doctor || currentUser instanceof Nurse) {
+			MedicalRecord mr = records.get(mrID);
+			if (mr == null) {
+				return NOT_FOUND;
+			}
+			ArrayList<String> accessList = mr.getAccessList();
+			if (accessList.contains(currentUser.getID())) {
 				mr.write(data);
 				logger.logWrite(currentUser.getID(), mrID);
 				return "Write successful!";
@@ -79,16 +80,16 @@ public class AccessController {
 	}
 
 	public String remove(String mrID) {
-		MedicalRecord mr = records.get(mrID);
-		if(mr == null){
-			return NOT_FOUND;
-		}
 		if (currentUser instanceof GA) {
+			MedicalRecord mr = records.get(mrID);
+			if(mr == null){
+				return NOT_FOUND;
+			}
 			records.remove(mr.getID());
 			logger.logRemove(currentUser.getID(), mr.getID());
 			return "The medical record was successfully removed!";
 		}
-		logger.logFailedRemove(currentUser.getID(), mr.getID());
+		logger.logFailedRemove(currentUser.getID(), mrID);
 		return PERMISSION_DENIED;
 	}
 
