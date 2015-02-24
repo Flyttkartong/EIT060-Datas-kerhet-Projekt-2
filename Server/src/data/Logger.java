@@ -46,7 +46,7 @@ public class Logger {
 	}
 
 	public void logFailedWrite(String userID, String mrID) {
-		write(date() + userID + " tried to write " + mrID + PERMISSION_DENIED);
+		write(date() + userID + " tried to write to " + mrID + PERMISSION_DENIED);
 
 	}
 
