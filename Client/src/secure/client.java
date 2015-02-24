@@ -19,17 +19,17 @@ public class client {
 
     public static void main(String[] args) throws Exception {
         String host = null;
-        int port = -1;
+        int port = 8001;
         for (int i = 0; i < args.length; i++) {
             System.out.println("args[" + i + "] = " + args[i]);
         }
-        if (args.length < 2) {
-            System.out.println("USAGE: java client host port");
-            System.exit(-1);
-        }
+//        if (args.length < 2) {
+//            System.out.println("USAGE: java client host port");
+//            System.exit(-1);
+//        }
         try { /* get input parameters */
-            host = args[0];
-            port = Integer.parseInt(args[1]);
+//            host = args[0];
+//            port = Integer.parseInt(args[1]);
         } catch (IllegalArgumentException e) {
             System.out.println("USAGE: java client host port");
             System.exit(-1);
