@@ -10,12 +10,6 @@ public class InputHandler {
 	public String handleCommand(String c) throws ArrayIndexOutOfBoundsException {
 		/*Split around quotation marks to get data - always last element (will have length 1 if no data exists) */
 		String[] dataInput = c.split("\"");
-		
-		/* If data exists, set flag */
-		boolean dataExists = false;
-		if(dataInput.length > 1) {
-			dataExists = true;
-		}
 
 		/* Split input around spaces and add dataInput if it exists */
 		String[] input = dataInput[0].split(" ");
@@ -23,20 +17,14 @@ public class InputHandler {
 		/* Separate command from arguments */
 		String command = input[0];
 
-		String[] arguments;
-		/* If data exists, make room for it in arguments */
-		if (dataExists) {
-			arguments = new String[input.length];
-		} else {
-			arguments = new String[input.length - 1];
-		}
-		
+		/* Make room for data in case it exists */
+		String[] arguments = new String[input.length];
 		for (int i = 0; i < input.length; i++) {
 			arguments[i] = input[i+1];
 		}
 		
 		/* If data exists, add it to arguments */
-		if(dataExists){
+		if(dataInput.length > 1){
 			arguments[arguments.length - 1] = dataInput[1];
 		}
 
