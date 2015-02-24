@@ -15,22 +15,22 @@ public class Tester {
 	}
 
 	private static void testCreate(InputHandler ih) {
-		String command = "create anna-2015-02-24 anna klas \"Före write\"";
+		String command = "create Anna-2015-02-24 Anna Klas \"Före write\"";
 		System.out.println(ih.handleCommand(command));
 	}
 
 	private static void testWrite(InputHandler ih) {
-		String command = "write anna-2015-02-24 \"Efter write\"";
+		String command = "write Anna-2015-02-24 \"Efter write\"";
 		System.out.println(ih.handleCommand(command));
 	}
 
 	private static void testRead(InputHandler ih) {
-		String command = "read anna-2015-02-24";
+		String command = "read Anna-2015-02-24";
 		System.out.println(ih.handleCommand(command));
 	}
 
 	private static void testRemove(InputHandler ih) {
-		String command = "remove anna-2015-02-24";
+		String command = "remove Anna-2015-02-24";
 		System.out.println(ih.handleCommand(command));
 	}
 }
