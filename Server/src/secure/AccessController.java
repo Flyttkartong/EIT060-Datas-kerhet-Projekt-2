@@ -18,8 +18,8 @@ public class AccessController {
 	private User currentUser;
 	private HashMap<String, User> users;
 	private HashMap<String, MedicalRecord> records;
-	private static final String PERMISSION_DENIED = "Error: Permission denied.";
-	private static final String NOT_FOUND = "Error: Medical Record not found.";
+	private static final String PERMISSION_DENIED = "Error: Permission denied";
+	private static final String NOT_FOUND = "Error: Medical Record not found";
 
 	public AccessController(String userID, String logFilePath) {
 		loadData();
@@ -72,7 +72,7 @@ public class AccessController {
 			if (accessList.contains(currentUser.getID())) {
 				mr.write(data);
 				logger.logWrite(currentUser.getID(), mrID);
-				return "Write successful!";
+				return "Write successful";
 			}
 		}
 		logger.logFailedWrite(currentUser.getID(), mrID);
@@ -87,7 +87,7 @@ public class AccessController {
 			}
 			records.remove(mr.getID());
 			logger.logRemove(currentUser.getID(), mr.getID());
-			return "The medical record was successfully removed!";
+			return "The medical record was successfully removed";
 		}
 		logger.logFailedRemove(currentUser.getID(), mrID);
 		return PERMISSION_DENIED;
@@ -98,7 +98,7 @@ public class AccessController {
 			Doctor doctor = (Doctor) currentUser;
 			records.put(mrID, new MedicalRecord(mrID, patientID, nurseID, doctor.getID(), doctor.getDivision(), data));
 			logger.logCreate(currentUser.getID(), mrID);
-			return "The medical record was successfully created!";
+			return "The medical record was successfully created";
 		}
 		logger.logFailedCreate(currentUser.getID(), mrID);
 		return PERMISSION_DENIED;
