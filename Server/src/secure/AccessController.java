@@ -6,75 +6,82 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import user.Doctor;
-import user.GA;
-import user.Nurse;
-import user.Patient;
-import user.Staff;
-import user.User;
-import data.ID;
+import user.*;
 import data.Logger;
 import data.MedicalRecord;
 
 public class AccessController {
 	private Logger logger;
 	private User currentUser;
+	private HashMap<String, User> users;
+	private HashMap<String, MedicalRecord> records;
+	private final String DENIED = "Permission denied.";
 
-	public AccessController(User currentUser) {
+	public AccessController(String userID) {
+		loadData();
+		currentUser = users.get(userID);
 		logger = new Logger("logfile");
-		this.currentUser = currentUser;
 	}
 
-	public boolean authenticate(ID ID) {
-		return true;
+	private void loadData() {
+		// TODO Load users and medical records from file
+		users = new HashMap<String, User>();
+		records = new HashMap<String, MedicalRecord>();
 	}
 
-	public String read(MedicalRecord mr) {
-		ArrayList<User> accessList = mr.getAccessList();
-		String division = mr.getDivision();
-		if (accessList.contains(currentUser)) {
-			logger.logRead(currentUser.getID(), mr.getID());
+	public String read(String mrID) {
+		MedicalRecord mr = records.get(mrID);
+		ArrayList<String> accessList = mr.getAccessList();
+		String mrDivision = mr.getDivision();
+		if (accessList.contains(currentUser.getID())) {
+			logger.logRead(currentUser.getID(), mrID);
 			return mr.read();
-		} else if (currentUser instanceof Staff && ((Staff) currentUser).belongsTo(division)) {
-			logger.logRead(currentUser.getID(), mr.getID());
+		} else if (currentUser instanceof Staff && ((Staff) currentUser).getDivision().equals(mrDivision)) {
+			logger.logRead(currentUser.getID(), mrID);
 			return mr.read();
 		} else if (currentUser instanceof GA) {
-			logger.logRead(currentUser.getID(), mr.getID());
+			logger.logRead(currentUser.getID(), mrID);
 			return mr.read();
 		}
-		return null;
+		return DENIED;
 	}
 
-	public void write(MedicalRecord mr, String data) {
-		ArrayList<User> accessList = mr.getAccessList();
-		if (accessList.contains(currentUser)) {
+	public String write(String mrID, String data) {
+		MedicalRecord mr = records.get(mrID);
+		ArrayList<String> accessList = mr.getAccessList();
+		if (accessList.contains(currentUser.getID())) {
 			if (currentUser instanceof Doctor || currentUser instanceof Nurse) {
 				mr.write(data);
-				logger.logWrite(currentUser.getID(), mr.getID());
+				logger.logWrite(currentUser.getID(), mrID);
+				return "Write successful!";
 			}
 		}
+		return DENIED;
 	}
 
-	public void remove(MedicalRecord mr) {
+	public String remove(String mrID) {
 		if (currentUser instanceof GA) {
-			mr.delete();
-			logger.logRemove(currentUser.getID(), mr.getID());
+			records.remove(mrID);
+			logger.logRemove(currentUser.getID(), mrID);
+			return "The medical record was successfully removed!";
 		}
+		return DENIED;
 	}
 
-	public void create(Patient patient, Nurse nurse, String data,
-			int ID) {
+	public String create(String mrID, String patientID, String nurseID, String data) {
 		if (currentUser instanceof Doctor) {
 			Doctor doctor = (Doctor) currentUser;
-			MedicalRecord mr = new MedicalRecord(doctor, nurse, patient,
-					doctor.getDivision(), data, ID);
-			logger.logCreate(currentUser.getID(), mr.getID());
+			records.put(mrID, new MedicalRecord(mrID, patientID, nurseID, doctor.getID(), doctor.getDivision(), data));
+			logger.logCreate(currentUser.getID(), mrID);
+			return "The medical record was successfully created!";
 		}
+		return DENIED;
 	}
 
 	private class RecordHandler {
-		public ArrayList<MedicalRecord> read() {
+		public HashMap<String, User> read() {
 			Charset charset = Charset.forName("US-ASCII");
 			try (BufferedReader reader = Files.newBufferedReader(
 					Paths.get("./Medical Records"), charset)) {
