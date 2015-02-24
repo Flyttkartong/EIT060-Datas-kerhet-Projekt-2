@@ -13,8 +13,8 @@ public class Tester {
 		testRead(ih);
 		ac.setCurrentUserID("Bengt");
 		testRemove(ih);
+		testBadCommands(ih);
 	}
-
 	private static void testCreate(InputHandler ih) {
 		String command = "create Anna-2015-02-24 Anna Klas \"Före write\"";
 		System.out.println(ih.handleCommand(command));
@@ -32,6 +32,14 @@ public class Tester {
 
 	private static void testRemove(InputHandler ih) {
 		String command = "remove Anna-2015-02-24";
+		System.out.println(ih.handleCommand(command));
+	}
+	
+	private static void testBadCommands(InputHandler ih) {
+		String command = "create a b";
+		System.out.println(ih.handleCommand(command));
+		
+		command = "abc";
 		System.out.println(ih.handleCommand(command));
 	}
 }
