@@ -21,8 +21,8 @@ public class InputHandler {
 		String[] arguments = new String[input.length];
 		
 		/* Add the elements in input to argument, except the first (command) */
-		for (int i = 0; i < input.length; i++) {
-			arguments[i] = input[i+1];
+		for (int i = 1; i < input.length; i++) {
+			arguments[i-1] = input[i];
 		}
 		
 		/* If data exists, add it to arguments */
