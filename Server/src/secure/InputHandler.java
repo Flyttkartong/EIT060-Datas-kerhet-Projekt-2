@@ -19,6 +19,8 @@ public class InputHandler {
 
 		/* Make room for data in case it exists */
 		String[] arguments = new String[input.length];
+		
+		/* Add the elements in input to argument, except the first (command) */
 		for (int i = 0; i < input.length; i++) {
 			arguments[i] = input[i+1];
 		}
@@ -28,8 +30,8 @@ public class InputHandler {
 			arguments[arguments.length - 1] = dataInput[1];
 		}
 
-		String returnValue;
 		/* Handle each command in a separate method */
+		String returnValue;
 		switch (command) {
 		case "read":
 			returnValue = handleRead(arguments);
