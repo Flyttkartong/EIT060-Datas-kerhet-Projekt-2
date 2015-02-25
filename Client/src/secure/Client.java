@@ -39,16 +39,20 @@ public class Client {
             SSLSocketFactory factory = null;
             try {
             	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            	String input = br.readLine();
-                char[] password = input.toCharArray();
+            	System.out.print("Username: ");
+            	String user = br.readLine();
+            	System.out.print("Password: ");
+            	String password = br.readLine();
+            	
+                char[] passwordArray = password.toCharArray();
                 KeyStore ks = KeyStore.getInstance("JKS");
                 KeyStore ts = KeyStore.getInstance("JKS");
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
                 SSLContext ctx = SSLContext.getInstance("TLS");
-                ks.load(new FileInputStream("./keystores/bobkeystore"), password);  // keystore password (storepass)
+                ks.load(new FileInputStream("./keystores/" + user.toLowerCase() + "keystore"), passwordArray);  // keystore password (storepass)
 				ts.load(new FileInputStream("./keystores/clienttruststore"), "password".toCharArray()); // truststore password (storepass);
-				kmf.init(ks, password); // user password (keypass)
+				kmf.init(ks, passwordArray); // user password (keypass)
 				tmf.init(ts); // keystore can be used as truststore here
 				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
                 factory = ctx.getSocketFactory();

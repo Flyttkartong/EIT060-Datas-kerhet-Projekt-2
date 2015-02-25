@@ -53,6 +53,7 @@ public class InputHandler {
 				break;
 			case "help":
 				returnValue = SUPPORTED_COMMANDS;
+				break;
 			default:
 				returnValue = "Error: Command " + command + " not found\n" + HELP;
 				break;
