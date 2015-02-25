@@ -4,14 +4,14 @@ import secure.*;
 
 public class Tester {
 	public static void main(String[] args) {
-		AccessController ac = new AccessController("Fredrik", "./historylog");
+		AccessController ac = new AccessController("./historylog");
 		InputHandler ih = new InputHandler(ac);
 
 		testCreate(ih);
 		testRead(ih);
 		testWrite(ih);
 		testRead(ih);
-		ac.setCurrentUserID("Bengt");
+		ac.initialize("Bengt");
 		testRemove(ih);
 		
 		testBadCommands(ih);

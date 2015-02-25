@@ -9,10 +9,12 @@ import javax.security.cert.X509Certificate;
 
 public class Server implements Runnable {
     private ServerSocket serverSocket = null;
+    private AccessController accessController = null;
     private static int numConnectedClients = 0;
 
-    public Server(ServerSocket ss) throws IOException {
+    public Server(ServerSocket ss, AccessController ac) throws IOException {
         serverSocket = ss;
+        accessController = ac;
         newListener();
     }
 
@@ -27,7 +29,13 @@ public class Server implements Runnable {
             System.out.println("client connected");
             System.out.println("client name (cert subject DN field): " + subject);
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
-
+                        
+            /* Set current user in AccessController */
+            String userID = subject.split("CN=")[1];
+            
+            accessController.initialize(userID);
+            InputHandler ih = new InputHandler(accessController);
+            
             PrintWriter out = null;
             BufferedReader in = null;
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -35,10 +43,11 @@ public class Server implements Runnable {
 
             String clientMsg = null;
             while ((clientMsg = in.readLine()) != null) {
-			    String rev = new StringBuilder(clientMsg).reverse().toString();
+//			    String rev = new StringBuilder(clientMsg).reverse().toString();
                 System.out.println("received '" + clientMsg + "' from client");
-                System.out.print("sending '" + rev + "' to client...");
-				out.println(rev);
+                String returnValue = ih.handleCommand(clientMsg);
+                System.out.print("sending '" + returnValue + "' to client...");
+				out.println(returnValue);
 				out.flush();
                 System.out.println("done\n");
 			}
@@ -59,6 +68,9 @@ public class Server implements Runnable {
 
     public static void main(String args[]) {
         System.out.println("\nServer Started\n");
+        
+        AccessController ac = new AccessController("./historylog");
+        
         int port = 8001;
         if (args.length >= 1) {
             port = Integer.parseInt(args[0]);
@@ -68,7 +80,7 @@ public class Server implements Runnable {
             ServerSocketFactory ssf = getServerSocketFactory(type);
             ServerSocket ss = ssf.createServerSocket(port);
             ((SSLServerSocket)ss).setNeedClientAuth(true); // enables client authentication
-            new Server(ss);
+            new Server(ss, ac);
         } catch (IOException e) {
             System.out.println("Unable to start Server: " + e.getMessage());
             e.printStackTrace();

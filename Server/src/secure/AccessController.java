@@ -21,16 +21,16 @@ public class AccessController {
 	private static final String PERMISSION_DENIED = "Error: Permission denied";
 	private static final String NOT_FOUND = "Error: Medical Record not found";
 
-	public AccessController(String userID, String logFilePath) {
+	public AccessController(String logFilePath) {
 		loadData();
-		currentUser = users.get(userID);
 		logger = new Logger(logFilePath);
 	}
 	
 	/**
-	 * Only for testing
+	 * Must be called before any other method. 
+	 * Sets current user in this AccessController
 	 */
-	public void setCurrentUserID(String userID) {
+	public void initialize(String userID) {
 		currentUser = users.get(userID);
 	}
 
