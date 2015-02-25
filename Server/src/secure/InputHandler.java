@@ -3,7 +3,8 @@ package secure;
 public class InputHandler {
 	private AccessController accessController;
 	private final static String SUPPORTED_COMMANDS = "Supported commands:\nread\tmrID\nwrite\tmrID  \"data\"\nremove\tmrID\ncreate\tmrID  patientID  nurseID  \"data\"";
-
+	private final static String HELP = "Type help for a list of supported commands";
+	
 	public InputHandler(AccessController ac) {
 		accessController = ac;
 	}
@@ -50,12 +51,14 @@ public class InputHandler {
 			case "create":
 				returnValue = handleCreate(arguments);
 				break;
+			case "help":
+				returnValue = SUPPORTED_COMMANDS;
 			default:
-				returnValue = "Error: Command " + command + " not found\n" + SUPPORTED_COMMANDS;
+				returnValue = "Error: Command " + command + " not found\n" + HELP;
 				break;
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			returnValue = "Error: Bad arguments\n" + SUPPORTED_COMMANDS;
+			returnValue = "Error: Bad arguments for command " + command + "\n" + HELP;
 		}
 		return returnValue;
 	}

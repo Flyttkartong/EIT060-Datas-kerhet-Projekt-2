@@ -16,12 +16,12 @@ public class Tester {
 		testBadCommands(ih);
 	}
 	private static void testCreate(InputHandler ih) {
-		String command = "create Anna-2015-02-24 Anna Klas \"Före write\"";
+		String command = "create Anna-2015-02-24 Anna Klas \"Before write\"";
 		System.out.println(ih.handleCommand(command));
 	}
 
 	private static void testWrite(InputHandler ih) {
-		String command = "write Anna-2015-02-24 \"Efter write\"";
+		String command = "write Anna-2015-02-24 \"After write\"";
 		System.out.println(ih.handleCommand(command));
 	}
 
