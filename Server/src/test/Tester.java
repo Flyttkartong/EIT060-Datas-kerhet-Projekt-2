@@ -4,7 +4,7 @@ import secure.*;
 
 public class Tester {
 	public static void main(String[] args) {
-		AccessController ac = new AccessController("Alice", "./historylog");
+		AccessController ac = new AccessController("Fredrik", "./historylog");
 		InputHandler ih = new InputHandler(ac);
 
 		testCreate(ih);
@@ -13,6 +13,7 @@ public class Tester {
 		testRead(ih);
 		ac.setCurrentUserID("Bengt");
 		testRemove(ih);
+		
 		testBadCommands(ih);
 	}
 	private static void testCreate(InputHandler ih) {

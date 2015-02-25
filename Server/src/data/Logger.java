@@ -1,6 +1,7 @@
 package data;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +14,10 @@ public class Logger {
 
 	public Logger(String fileName) {
 		this.fileName = fileName;
-
+		if(!new File(fileName).exists()){
+			write("Time\t   User\t\tAction\t\tMedical Record");
+		}
+		
 	}
 
 	private void write(String content) {
@@ -21,42 +25,44 @@ public class Logger {
 				new FileWriter(fileName, true)))) {
 			out.println(content);
 		} catch (IOException e) {
-			// exception handling left as an exercise for the reader
+			System.out.println("Error: Logfile could not be found, exiting");
+			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 
 	public void logRead(String userID, String mrID) {
-		write(date() + userID + " read " + mrID);
+		write(date() + userID + "\tread\t\t" + mrID);
 	}
 
 	public void logWrite(String userID, String mrID) {
-		write(date() + userID + " wrote to " + mrID);
+		write(date() + userID + "\twrote to\t" + mrID);
 	}
 
 	public void logRemove(String userID, String mrID) {
-		write(date() + userID + " removed " + mrID);
+		write(date() + userID + "\tremoved\t\t" + mrID);
 	}
 
 	public void logCreate(String userID, String mrID) {
-		write(date() + userID + " created " + mrID);
+		write(date() + userID + "\tcreated\t\t" + mrID);
 	}
 
 	public void logFailedRead(String userID, String mrID) {
-		write(date() + userID + " tried to read " + mrID + PERMISSION_DENIED);
+		write(date() + userID + "\ttried to read\t" + mrID + PERMISSION_DENIED);
 	}
 
 	public void logFailedWrite(String userID, String mrID) {
-		write(date() + userID + " tried to write to " + mrID + PERMISSION_DENIED);
+		write(date() + userID + "\ttried to write to " + mrID + PERMISSION_DENIED);
 
 	}
 
 	public void logFailedRemove(String userID, String mrID) {
-		write(date() + userID + " tried to remove " + mrID + PERMISSION_DENIED);
+		write(date() + userID + "\ttried to remove\t" + mrID + PERMISSION_DENIED);
 
 	}
 
 	public void logFailedCreate(String userID, String mrID) {
-		write(date() + userID + " tried to create " + mrID + PERMISSION_DENIED);
+		write(date() + userID + "\ttried to create " + mrID + PERMISSION_DENIED);
 	}
 
 	private String date() {
