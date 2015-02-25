@@ -71,6 +71,7 @@ public class AccessController {
 			ArrayList<String> accessList = mr.getAccessList();
 			if (accessList.contains(currentUser.getID())) {
 				mr.write(data);
+				saveRecordsToFile();
 				logger.logWrite(currentUser.getID(), mrID);
 				return "Write successful";
 			}
@@ -103,20 +104,9 @@ public class AccessController {
 		logger.logFailedCreate(currentUser.getID(), mrID);
 		return PERMISSION_DENIED;
 	}
-
-	private class RecordHandler {
-		public HashMap<String, User> read() {
-			Charset charset = Charset.forName("US-ASCII");
-			try (BufferedReader reader = Files.newBufferedReader(
-					Paths.get("./Medical Records"), charset)) {
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					System.out.println(line);
-				}
-			} catch (IOException e) {
-				System.err.format("IOException: %s%n", e);
-			}
-			return null;
-		}
+	
+	private void saveRecordsToFile() {
+		// TODO Auto-generated method stub
+		
 	}
 }
