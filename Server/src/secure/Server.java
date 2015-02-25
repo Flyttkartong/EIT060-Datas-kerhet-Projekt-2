@@ -85,7 +85,6 @@ public class Server implements Runnable {
                 KeyStore ks = KeyStore.getInstance("JKS");
 				KeyStore ts = KeyStore.getInstance("JKS");
                 char[] password = "password".toCharArray();
-
                 ks.load(new FileInputStream("serverkeystore"), password);  // keystore password (storepass)
                 ts.load(new FileInputStream("servertruststore"), password); // truststore password (storepass)
                 kmf.init(ks, password); // certificate password (keypass)

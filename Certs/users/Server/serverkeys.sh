@@ -1,18 +1,18 @@
 echo '============================'
-echo 'Skapar server side nyckelpar'
+echo 'Skapar Client side nyckelpar'
 echo '============================'
 
-#skapa ett nyckelpar
-keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias bob -dname "CN=Bob" -storepass password -keypass doctorbob1
-keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias alice -dname "CN=Alice" -storepass password -keypass doctoralice1
-keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias klas -dname "CN=Klas" -storepass password -keypass nurseklas1
-keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias urban -dname "CN=Urban" -storepass password -keypass nurseurban1
-keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias bengt -dname "CN=Bengt" -storepass password -keypass gabengt1
-keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias anna -dname "CN=Anna" -storepass password -keypass patientanna1
-keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias fredrik -dname "CN=Fredrik" -storepass password -keypass patientfredrik1
-keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias johan -dname "CN=Johan" -storepass password -keypass patientjohan1
+#skapa nyckelpar och lägg dem i rätt keystore
+keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias bob -dname "CN=Bob" -storepass password -keypass password
+keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias alice -dname "CN=Alice" -storepass password -keypass password
+keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias klas -dname "CN=Klas" -storepass password -keypass password
+keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias urban -dname "CN=Urban" -storepass password -keypass password
+keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias bengt -dname "CN=Bengt" -storepass password -keypass password
+keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias anna -dname "CN=Anna" -storepass password -keypass password
+keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias fredrik -dname "CN=Fredrik" -storepass password -keypass password
+keytool -genkeypair -keyalg RSA -keystore serverkeystore -alias johan -dname "CN=Johan" -storepass password -keypass password
 
-#skapa en CSR för keystore
+#skapa en CSR för alla keystores
 keytool -certreq -keystore serverkeystore -file bob.csr -alias bob -storepass password
 keytool -certreq -keystore serverkeystore -file alice.csr -alias alice -storepass password
 keytool -certreq -keystore serverkeystore -file klas.csr -alias klas -storepass password
@@ -23,11 +23,11 @@ keytool -certreq -keystore serverkeystore -file fredrik.csr -alias fredrik -stor
 keytool -certreq -keystore serverkeystore -file johan.csr -alias johan -storepass password
 
 echo '=============================='
-echo 'Signerar server side nyckelpar'
+echo 'Signerar Client side nyckelpar'
 echo '   Vad vänlig ange lösenord   '
 echo '=============================='
 
-#signera keystore med CA
+#signera alla keystores med CA
 openssl x509 -req -in bob.csr -CA cacert.pem -CAkey cakey.pem  -out bob.crt -CAcreateserial
 openssl x509 -req -in alice.csr -CA cacert.pem -CAkey cakey.pem  -out alice.crt -CAcreateserial
 openssl x509 -req -in klas.csr -CA cacert.pem -CAkey cakey.pem  -out klas.crt -CAcreateserial
@@ -39,7 +39,7 @@ openssl x509 -req -in johan.csr -CA cacert.pem -CAkey cakey.pem  -out johan.crt 
 
 keytool -importcert -file cacert.pem -alias ca -keystore serverkeystore -storepass password
 
-#importera sitt eget cert
+#importera alla cert
 keytool -importcert -file bob.crt -alias bob -keystore serverkeystore -storepass password
 keytool -importcert -file alice.crt -alias alice -keystore serverkeystore -storepass password
 keytool -importcert -file klas.crt -alias klas -keystore serverkeystore -storepass password
