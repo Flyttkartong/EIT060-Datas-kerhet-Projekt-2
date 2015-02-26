@@ -34,68 +34,77 @@ public class AccessController {
 	}
 
 	public String read(String mrID) {
-		String returnValue = PERMISSION_DENIED;
+		String returnValue;
 		MedicalRecord mr = records.get(mrID);
-		if (mr == null) {
-			returnValue = NOT_FOUND;
-		}
-		ArrayList<String> accessList = mr.getAccessList();
-		String mrDivision = mr.getDivision();
-		
-		/* If currentUser: is in accessList OR is Staff and has the same division OR is a GA */
-		if ((accessList.contains(currentUser.getID())) 
-				|| (currentUser instanceof Staff && ((Staff) currentUser).getDivision().equals(mrDivision))
-				|| (currentUser instanceof GA)) {
+		if (mr != null) {
+			ArrayList<String> accessList = mr.getAccessList();
+			String mrDivision = mr.getDivision();
+			
+			/* If currentUser: is in accessList OR is Staff and has the same division OR is a GA */
+			if ((accessList.contains(currentUser.getID())) 
+					|| (currentUser instanceof Staff && ((Staff) currentUser).getDivision().equals(mrDivision))
+					|| (currentUser instanceof GA)) {
 			Logger.logRead(currentUser.getID(), mrID);
 			returnValue = mr.read();
+			} else {
+				Logger.logFailedRead(currentUser.getID(), mrID);
+				returnValue = PERMISSION_DENIED;
+			}
+		} else {			
+			returnValue = NOT_FOUND;
 		}
-		Logger.logFailedRead(currentUser.getID(), mrID);
 		return returnValue;
 	}
 
 	public String write(String mrID, String data) {
-		String returnValue = PERMISSION_DENIED;
-		if (currentUser instanceof Doctor || currentUser instanceof Nurse) {
-			MedicalRecord mr = records.get(mrID);
-			if (mr == null) {
-				returnValue = NOT_FOUND;
-			}
+		String returnValue;
+		MedicalRecord mr = records.get(mrID);
+		if (mr != null) {
 			ArrayList<String> accessList = mr.getAccessList();
-			if (accessList.contains(currentUser.getID())) {
+			if ((currentUser instanceof Staff) && accessList.contains(currentUser.getID())) {
 				mr.write(data);
 				saveRecordsToFile();
 				Logger.logWrite(currentUser.getID(), mrID);
 				returnValue = "Write successful";
+			} else {
+				Logger.logFailedWrite(currentUser.getID(), mrID);
+				returnValue = PERMISSION_DENIED;
 			}
+		} else {
+			returnValue = NOT_FOUND;
 		}
-		Logger.logFailedWrite(currentUser.getID(), mrID);
 		return returnValue;
 	}
 
 	public String remove(String mrID) {
-		String returnValue = PERMISSION_DENIED;
-		if (currentUser instanceof GA) {
-			MedicalRecord mr = records.get(mrID);
-			if(mr == null){
-				returnValue = NOT_FOUND;
+		String returnValue;
+		MedicalRecord mr = records.get(mrID);
+		if(mr != null){
+			if (currentUser instanceof GA) {
+				records.remove(mr.getID());
+				Logger.logRemove(currentUser.getID(), mr.getID());
+				returnValue = "The medical record was successfully removed";
+			} else {
+				Logger.logFailedRemove(currentUser.getID(), mrID);
+				returnValue = PERMISSION_DENIED;
 			}
-			records.remove(mr.getID());
-			Logger.logRemove(currentUser.getID(), mr.getID());
-			returnValue = "The medical record was successfully removed";
+		} else {			
+			returnValue = NOT_FOUND;
 		}
-		Logger.logFailedRemove(currentUser.getID(), mrID);
 		return returnValue;
 	}
 
 	public String create(String mrID, String patientID, String nurseID, String data) {
-		String returnValue = PERMISSION_DENIED;
+		String returnValue;
 		if (currentUser instanceof Doctor) {
 			Doctor doctor = (Doctor) currentUser;
 			records.put(mrID, new MedicalRecord(mrID, patientID, nurseID, doctor.getID(), doctor.getDivision(), data));
 			Logger.logCreate(currentUser.getID(), mrID);
 			returnValue = "The medical record was successfully created";
+		} else {
+			Logger.logFailedCreate(currentUser.getID(), mrID);
+			returnValue = PERMISSION_DENIED;
 		}
-		Logger.logFailedCreate(currentUser.getID(), mrID);
 		return returnValue;
 	}
 	

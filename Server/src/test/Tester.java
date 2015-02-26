@@ -5,14 +5,15 @@ import secure.*;
 public class Tester {
 	public static void main(String[] args) {
 		AccessController ac = new AccessController();
-		ac.initialize("Alice");
+		ac.initialize("Fredrik");
 		InputHandler ih = new InputHandler(ac);
 
 		testCreate(ih);
 		testRead(ih);
+//		ac.initialize("Klas");
 		testWrite(ih);
 		testRead(ih);
-		ac.initialize("Bengt");
+//		ac.initialize("Bengt");
 		testRemove(ih);
 		
 		testBadCommands(ih);
