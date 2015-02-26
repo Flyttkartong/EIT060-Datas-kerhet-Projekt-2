@@ -51,7 +51,7 @@ public class AccessController {
 			ArrayList<String> accessList = mr.getAccessList();
 			String mrDivision = mr.getDivision();
 			
-			/* If currentUser: is in accessList OR is Staff and has the same division OR is a GA */
+			/* If: currentUser (is in accessList) OR (is Staff and has the same division) OR (is a GA) Then: permit access to mr */
 			if ((accessList.contains(currentUser.getID())) 
 					|| (currentUser instanceof Staff && ((Staff) currentUser).getDivision().equals(mrDivision))
 					|| (currentUser instanceof GA)) {
