@@ -1,7 +1,6 @@
 package data;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,11 +13,6 @@ public class Logger {
 
 	private static void write(String content) {
 		try {
-			File file = new File(fileName);
-			if(!file.exists()){
-				file.createNewFile();
-				write("Time\t   User\t\tAction\t\tMedical Record");
-			}
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
 			out.println(content);
 			out.close();
