@@ -2,8 +2,8 @@ package secure;
 
 public class InputHandler {
 	private AccessController accessController;
-	private final static String SUPPORTED_COMMANDS = "Supported commands:\nread\tmrID\nwrite\tmrID  \"data\"\nremove\tmrID\ncreate\tmrID  patientID  nurseID  \"data\"";
-	private final static String HELP = "Type help for a list of supported commands";
+	private final static String SUPPORTED_COMMANDS = "Supported commands:-read\tmrID-write\tmrID  \"data\"-remove\tmrID-create\tmrID  patientID  nurseID  \"data\"";
+	private final static String HELP = "-Type help for a list of supported commands";
 	
 	public InputHandler(AccessController ac) {
 		accessController = ac;
@@ -55,11 +55,11 @@ public class InputHandler {
 				returnValue = SUPPORTED_COMMANDS;
 				break;
 			default:
-				returnValue = "Error: Command " + command + " not found\n" + HELP;
+				returnValue = "Error: Command " + command + " not found" + HELP;
 				break;
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			returnValue = "Error: Bad arguments for command " + command + "\n" + HELP;
+			returnValue = "Error: Bad arguments for command " + command + HELP;
 		}
 		return returnValue;
 	}
