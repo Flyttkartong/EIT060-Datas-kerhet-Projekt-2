@@ -4,7 +4,8 @@ import secure.*;
 
 public class Tester {
 	public static void main(String[] args) {
-		AccessController ac = new AccessController("./historylog");
+		AccessController ac = new AccessController();
+		ac.initialize("Alice");
 		InputHandler ih = new InputHandler(ac);
 
 		testCreate(ih);

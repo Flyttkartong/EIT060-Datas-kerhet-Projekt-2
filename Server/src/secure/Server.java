@@ -32,7 +32,6 @@ public class Server implements Runnable {
                         
             /* Set current user in AccessController */
             String userID = subject.split("CN=")[1];
-            
             accessController.initialize(userID);
             InputHandler ih = new InputHandler(accessController);
             
@@ -43,11 +42,10 @@ public class Server implements Runnable {
 
             String clientMsg = null;
             while ((clientMsg = in.readLine()) != null) {
-//			    String rev = new StringBuilder(clientMsg).reverse().toString();
                 System.out.println("received '" + clientMsg + "' from client");
-                String returnValue = ih.handleCommand(clientMsg);
-                System.out.print("sending '" + returnValue + "' to client...");
-				out.println(returnValue);
+                String response = ih.handleCommand(clientMsg);
+                System.out.print("sending '" + response + "' to client...");
+				out.println(response);
 				out.flush();
                 System.out.println("done\n");
 			}
@@ -69,7 +67,7 @@ public class Server implements Runnable {
     public static void main(String args[]) {
         System.out.println("\nServer Started\n");
         
-        AccessController ac = new AccessController("./historylog");
+        AccessController ac = new AccessController();
         
         int port = 8001;
         if (args.length >= 1) {
