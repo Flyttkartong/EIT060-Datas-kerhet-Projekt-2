@@ -1,5 +1,11 @@
 package secure;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,9 +40,8 @@ public class AccessController {
 	}
 
 	private void loadData() {
-		// TODO Load users and medical records from file?
-		users = DataGenerator.createUserMap();
-		records = DataGenerator.createRecordMap();
+		users = DataGenerator.createUserMap();	// Load all users (see "userinfo.txt" for login details)
+		records = loadRecordsFromFile();
 	}
 
 	public String read(String mrID) {
@@ -79,6 +84,7 @@ public class AccessController {
 		} else {
 			returnValue = NOT_FOUND;
 		}
+		saveRecordsToFile();
 		return returnValue;
 	}
 
@@ -97,6 +103,7 @@ public class AccessController {
 		} else {			
 			returnValue = NOT_FOUND;
 		}
+		saveRecordsToFile();
 		return returnValue;
 	}
 
@@ -111,11 +118,35 @@ public class AccessController {
 			Logger.logFailedCreate(currentUser.getID(), mrID);
 			returnValue = PERMISSION_DENIED;
 		}
+		saveRecordsToFile();
 		return returnValue;
 	}
 	
 	private void saveRecordsToFile() {
-		// TODO Auto-generated method stub
-		
+		try {
+			FileOutputStream fos = new FileOutputStream("./medical_records");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(records);
+			oos.close();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private HashMap<String, MedicalRecord> loadRecordsFromFile() {
+		if((new File("./medical_records")).exists()) {	
+			try {
+				FileInputStream fis = new FileInputStream("./medical_records");
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				Object object = ois.readObject();
+				ois.close();
+				return (HashMap<String, MedicalRecord>) object;
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return new HashMap<String, MedicalRecord>();
 	}
 }

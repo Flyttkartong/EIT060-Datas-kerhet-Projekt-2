@@ -29,16 +29,15 @@ public class Server implements Runnable {
             System.out.println("client connected");
             System.out.println("client name (cert subject DN field): " + subject);
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
-                        
-            /* Set current user in AccessController */
-            String userID = subject.split("CN=")[1];
-            accessController.login(userID);
-            InputHandler ih = new InputHandler(accessController);
-            
             PrintWriter out = null;
             BufferedReader in = null;
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
+            /* Set current user in AccessController */
+            String userID = subject.split("CN=")[1];
+            accessController.login(userID);
+            InputHandler ih = new InputHandler(accessController);
 
             String clientMsg = null;
             while ((clientMsg = in.readLine()) != null) {
@@ -50,6 +49,7 @@ public class Server implements Runnable {
                 System.out.println("done\n");
 			}
             accessController.logout();
+            
 			in.close();
 			out.close();
 			socket.close();
