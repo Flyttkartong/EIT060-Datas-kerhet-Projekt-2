@@ -1,0 +1,19 @@
+-Doctors-
+userID	password		division
+Bob		doctorbob1		Allsvenskan
+Alice	doctoralice1	Allsvenskan
+
+-Nurses-
+userID	password		division
+Klas	nurseklas1		Allsvenskan
+Urban	nurseurban1		Superettan
+
+-Government Agency (GA)-
+userID	password
+Bengt	gabengt1
+
+-Patients-
+userID	password
+Anna	patientanna1
+Fredrik	patientfredrik1
+Johan	patientjohan1
