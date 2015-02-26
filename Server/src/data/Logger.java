@@ -67,7 +67,7 @@ public class Logger {
 
 	private static String date() {
 		Date date = new Date();
-		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-dd HH:mm");
 		return "[" + df.format(date) + "] ";
 	}
 }
