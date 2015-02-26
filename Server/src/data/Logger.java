@@ -24,37 +24,45 @@ public class Logger {
 	}
 
 	public static void logRead(String userID, String mrID) {
-		write(date() + userID + "\tread\t\t" + mrID);
+		write(date() + userID + " read " + "{" + mrID + "}");
 	}
 
 	public static void logWrite(String userID, String mrID) {
-		write(date() + userID + "\twrote to\t" + mrID);
+		write(date() + userID + " wrote to " + "{" + mrID + "}");
 	}
 
 	public static void logRemove(String userID, String mrID) {
-		write(date() + userID + "\tremoved\t\t" + mrID);
+		write(date() + userID + " removed " + "{" + mrID + "}");
 	}
 
 	public static void logCreate(String userID, String mrID) {
-		write(date() + userID + "\tcreated\t\t" + mrID);
+		write(date() + userID + " created " + "{" + mrID + "}");
 	}
 
 	public static void logFailedRead(String userID, String mrID) {
-		write(date() + userID + "\ttried to read\t" + mrID + PERMISSION_DENIED);
+		write(date() + userID + " tried to read " + "{" + mrID + "}" + PERMISSION_DENIED);
 	}
 
 	public static void logFailedWrite(String userID, String mrID) {
-		write(date() + userID + "\ttried to write to " + mrID + PERMISSION_DENIED);
+		write(date() + userID + " tried to write to " + "{" + mrID + "}" + PERMISSION_DENIED);
 
 	}
 
 	public static void logFailedRemove(String userID, String mrID) {
-		write(date() + userID + "\ttried to remove\t" + mrID + PERMISSION_DENIED);
+		write(date() + userID + " tried to remove " + "{" + mrID + "}" + PERMISSION_DENIED);
 
 	}
 
 	public static void logFailedCreate(String userID, String mrID) {
-		write(date() + userID + "\ttried to create " + mrID + PERMISSION_DENIED);
+		write(date() + userID + " tried to create " + "{" + mrID + "}" + PERMISSION_DENIED);
+	}
+	
+	public static void logLogin(String userID) {
+		write(date() + userID + " logged in");
+	}
+	
+	public static void logLogout(String userID) {
+		write(date() + userID + " logged out");
 	}
 
 	private static String date() {

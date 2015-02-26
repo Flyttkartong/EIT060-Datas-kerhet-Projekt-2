@@ -23,8 +23,14 @@ public class AccessController {
 	 * Must be called before any other method. 
 	 * Sets current user in this AccessController
 	 */
-	public void initialize(String userID) {
+	public void login(String userID) {
 		currentUser = users.get(userID);
+		Logger.logLogin(currentUser.getID());
+	}
+	
+	public void logout() {
+		Logger.logLogout(currentUser.getID());
+		currentUser = null;
 	}
 
 	private void loadData() {

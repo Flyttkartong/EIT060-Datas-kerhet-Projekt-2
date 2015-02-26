@@ -5,21 +5,23 @@ import secure.*;
 public class Tester {
 	public static void main(String[] args) {
 		AccessController ac = new AccessController();
-		ac.initialize("Fredrik");
+		ac.login("Alice");
 		InputHandler ih = new InputHandler(ac);
 
 		testCreate(ih);
 		testRead(ih);
-//		ac.initialize("Klas");
+		ac.logout();
+		ac.login("Urban");
 		testWrite(ih);
 		testRead(ih);
-//		ac.initialize("Bengt");
+		ac.logout();
+		ac.login("Bengt");
 		testRemove(ih);
 		
 		testBadCommands(ih);
 	}
 	private static void testCreate(InputHandler ih) {
-		String command = "create Anna-2015-02-24 Anna Klas \"Before write\"";
+		String command = "create Anna-2015-02-24 Anna Urban \"Before write\"";
 		System.out.println(ih.handleCommand(command));
 	}
 

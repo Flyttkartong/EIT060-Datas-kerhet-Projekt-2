@@ -32,7 +32,7 @@ public class Server implements Runnable {
                         
             /* Set current user in AccessController */
             String userID = subject.split("CN=")[1];
-            accessController.initialize(userID);
+            accessController.login(userID);
             InputHandler ih = new InputHandler(accessController);
             
             PrintWriter out = null;
@@ -49,6 +49,7 @@ public class Server implements Runnable {
 				out.flush();
                 System.out.println("done\n");
 			}
+            accessController.logout();
 			in.close();
 			out.close();
 			socket.close();
