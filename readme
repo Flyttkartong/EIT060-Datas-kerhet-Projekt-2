@@ -1,0 +1,16 @@
+--How to change user--
+To change to a specific user, replace the current clientkeystore 
+with the one in that user's folder. Then restart the client and 
+enter the password for that user.
+
+--Login details--
+Login details and user info can be found in userinfo.txt
+
+--Deleting Medical Records--
+To delete Medical Records, either delete them manually by using 
+the delete command while logged in as a GA, or delete the file 
+medical_records in Server.
+
+--Commands--
+To see accepted commands, either type help while logged in as any
+user, or see accepted_commands.txt

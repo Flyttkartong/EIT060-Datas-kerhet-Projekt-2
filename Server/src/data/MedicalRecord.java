@@ -22,7 +22,7 @@ public class MedicalRecord implements Serializable {
 	}
 
 	public void write(String data) {
-		this.data = data;
+		this.data += "-" + data;
 	}
 
 	public ArrayList<String> getAccessList() {
